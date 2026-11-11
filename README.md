@@ -9,7 +9,7 @@ Clone this repo into the new folder using the command:
 	
 ```
 cd new_folder_name
-git clone https://github.com/jeffreykirchner/multi_user_socket_template.git .
+git clone https://github.com/jeffreykirchner/endogenous_supply_and_demand.git .
 ```
 
 Install PostgreSQL and REDIS in WSL: https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-database<br>
@@ -17,7 +17,7 @@ Install PostgreSQL and REDIS in WSL: https://learn.microsoft.com/en-us/windows/w
 Set up PostgreSQL in WSL:
 ```
 create user dbadmin with encrypted password 'password_here';
-create database multi_user_socket_template with owner dbadmin;
+create database endogenous_supply_and_demand with owner dbadmin;
 ```
 
 ## Project Setup
@@ -25,6 +25,8 @@ create database multi_user_socket_template with owner dbadmin;
 Rename local_settings_sample.py to local_settings.py<br>
 local_settings.py is used for local development and is excluded from the repo<br>.
 Update the database section of this file with the info from your locally run instance of PostgreSQL.
+The Redis channel layer's `socket_timeout` must exceed Channels' five-second
+blocking receive timeout; the provided configuration uses 10 seconds.
 
 ### Python and Virtual Environment Setup:
 Install Python 3.12:
@@ -56,7 +58,6 @@ python manage.py runserver
 
 Navigate to http://localhost:8000 in your browser to see the project running.<br>
 Log in with the email and password you created in the previous step.
-
 
 
 

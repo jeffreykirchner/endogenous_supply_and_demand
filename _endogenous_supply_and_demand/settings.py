@@ -1,5 +1,5 @@
 """
-Django settings for multi_user_socket_template project.
+Django settings for endogenous_supply_and_demand project.
 """
 
 from pathlib import Path
@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = '_multi_user_socket_template.urls'
+ROOT_URLCONF = '_endogenous_supply_and_demand.urls'
 ADMIN_SITE_HEADER = 'Multi User Socket Template Administration'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -64,16 +64,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                '_multi_user_socket_template.context_processors.get_debug',
-                '_multi_user_socket_template.context_processors.get_auth_account_url',
-                '_multi_user_socket_template.context_processors.get_auth_password_reset_url',
+                '_endogenous_supply_and_demand.context_processors.get_debug',
+                '_endogenous_supply_and_demand.context_processors.get_auth_account_url',
+                '_endogenous_supply_and_demand.context_processors.get_auth_password_reset_url',
             ],
         },
     },
 ]
 
-#WSGI_APPLICATION = '_multi_user_socket_template.wsgi.application'
-ASGI_APPLICATION = '_multi_user_socket_template.asgi.application'
+#WSGI_APPLICATION = '_endogenous_supply_and_demand.wsgi.application'
+ASGI_APPLICATION = '_endogenous_supply_and_demand.asgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -33,8 +33,8 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             # 'hosts': [(os.environ['REDIS'])],
-            'hosts' :  [("localhost", 6379)],
-            'prefix' : 'multi_user_socket_template',
+            'hosts' :  [{"host": "localhost", "port": 6379, "socket_timeout": 10}],
+            'prefix' : 'endogenous_supply_and_demand',
             'capacity': 1500,
         },
     },
