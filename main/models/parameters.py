@@ -1,0 +1,50 @@
+'''
+single row site parameters
+'''
+from django.db import models
+from tinymce.models import HTMLField
+
+# from main.models import ParameterSet
+
+#gloabal parameters for site
+class Parameters(models.Model):
+    '''
+    single row site parameters
+    '''
+
+    contact_email = models.CharField(max_length = 1000, default="JohnSmith@abc.edu")       #primary contact for subjects
+    experiment_time_zone = models.CharField(max_length = 1000, default="US/Pacific")       #time zone the experiment is in
+
+    site_url = models.CharField(max_length = 200, default="http://localhost:8000")         #site URL used for display in emails
+
+    invitation_text = HTMLField(default="", verbose_name="Invitation Text")                                  #text to include in invitation emails
+    invitation_subject =  models.CharField(max_length = 200, default="", verbose_name="Invitation Subject")  #subject for invitation emails
+
+    default_parameter_set = models.ForeignKey("main.ParameterSet", on_delete=models.DO_NOTHING, null=True, blank=True) #default parameter set for new sessions
+
+    esi_auth_access_token = models.CharField(max_length = 1000, default="", verbose_name="ESI Auth Access Token")            #access token for ESI auth service
+    esi_auth_refresh_token = models.CharField(max_length = 1000, default="", verbose_name="ESI Auth Refresh Token")          #refresh token for ESI auth service
+    esi_auth_token_expiration = models.DateTimeField(null=True, blank=True, verbose_name="ESI Auth Token Expiration")        #expiration time for ESI auth access token
+
+    email_ms_access_token = models.CharField(max_length = 1000, default="", verbose_name="Email MS Auth Access Token")            #access token for Email MS auth service
+    email_ms_refresh_token = models.CharField(max_length = 1000, default="", verbose_name="Email MS Auth Refresh Token")          #refresh token for Email MS auth service
+    email_ms_token_expiration = models.DateTimeField(null=True, blank=True, verbose_name="Email MS Auth Token Expiration")        #expiration time for Email MS auth access token
+
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "Site Parameters"
+
+    class Meta:
+        verbose_name = 'Parameters'
+        verbose_name_plural = 'Parameters'
+
+    def json(self):
+        '''
+        model json object
+        '''
+        return{
+            "id" : self.id
+        }
+        
