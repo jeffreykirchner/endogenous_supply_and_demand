@@ -1,0 +1,41 @@
+<div class="card">
+    <div class="card-header fw-bold">Suppliers ([[ parameter_set.parameter_set_suppliers_order.length ]])</div>
+    <div class="card-body">
+        <p v-if="supplier_message" class="text-danger" role="alert">[[ supplier_message ]]</p>
+        <div class="row justify-content-center">
+            <div class="col-md-auto text-center">
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="m-1 p-1">Cost (¢)</th>
+                                <th scope="col" class="m-1 p-1">Transfer length<br>(seconds)</th>
+                                <th scope="col" class="m-1 p-1">Location (X,Y)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="id in parameter_set.parameter_set_suppliers_order" :key="id"
+                                tabindex="0" :aria-label="'Edit supplier ' + id"
+                                @click="show_edit_parameter_set_supplier(id)"
+                                @keydown.enter.prevent="show_edit_parameter_set_supplier(id)"
+                                @keydown.space.prevent="show_edit_parameter_set_supplier(id)">
+                                <td class="player_table_cell">[[ parameter_set.parameter_set_suppliers[id].cost ]]</td>
+                                <td class="player_table_cell">[[ parameter_set.parameter_set_suppliers[id].transfer_length ]]</td>
+                                <td class="player_table_cell">[[ parameter_set.parameter_set_suppliers[id].x ]], [[ parameter_set.parameter_set_suppliers[id].y ]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <button class="btn btn-outline-success btn-sm" type="button" title="Add supplier"
+                        :disabled="session.started || reconnecting || working"
+                        @click="send_parameter_set_supplier_change('add_parameterset_supplier')">
+                    Add <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

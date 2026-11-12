@@ -19,7 +19,7 @@ take_import_parameters: function take_import_parameters(message_data){
     } 
     else
     {
-        app.import_parameters_message = message_data.message;
+        app.import_parameters_message = message_data.status.message;
     } 
 },
 

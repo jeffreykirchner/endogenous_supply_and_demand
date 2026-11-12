@@ -74,6 +74,19 @@ class ParameterSet(models.Model):
         load values from dict
         '''
         logger = logging.getLogger(__name__) 
+        from main.forms import ParameterSetSupplierForm
+
+        suppliers = new_ps.get("parameter_set_suppliers", {})
+        if not isinstance(suppliers, dict):
+            return {"status": "fail", "message": "Invalid suppliers in parameter set."}
+        validated_suppliers = []
+        for values in suppliers.values():
+            if not isinstance(values, dict):
+                return {"status": "fail", "message": "Invalid supplier in parameter set."}
+            form = ParameterSetSupplierForm(values)
+            if not form.is_valid():
+                return {"status": "fail", "message": f"Invalid supplier in parameter set: {form.errors.as_text()}"}
+            validated_suppliers.append(form.cleaned_data)
 
         message = "Parameters loaded successfully."
         status = "success"
@@ -184,6 +197,11 @@ class ParameterSet(models.Model):
                 p = main.models.ParameterSetGround.objects.create(parameter_set=self)
                 p.from_dict(new_parameter_set_grounds[i])
 
+            self.parameter_set_suppliers.all().delete()
+            for values in validated_suppliers:
+                p = main.models.ParameterSetSupplier(parameter_set=self)
+                p.from_dict(values)
+
             self.json_for_session = None
             self.save()
             
@@ -292,7 +310,8 @@ class ParameterSet(models.Model):
                              update_walls=False,
                              update_barriers=False,
                              update_grounds=False,
-                             update_groups=False):
+                             update_groups=False,
+                             update_suppliers=False):
         '''
         update json model
         '''
@@ -311,6 +330,10 @@ class ParameterSet(models.Model):
         if update_grounds:
             self.json_for_session["parameter_set_grounds_order"] = list(self.parameter_set_grounds.all().values_list('id', flat=True))
             self.json_for_session["parameter_set_grounds"] = {str(p.id) : p.json() for p in self.parameter_set_grounds.all()}
+
+        if update_suppliers:
+            self.json_for_session["parameter_set_suppliers_order"] = list(self.parameter_set_suppliers.all().values_list('id', flat=True))
+            self.json_for_session["parameter_set_suppliers"] = {str(p.id): p.json() for p in self.parameter_set_suppliers.all()}
 
         if update_notices:
             self.json_for_session["parameter_set_notices_order"] = list(self.parameter_set_notices.all().values_list('id', flat=True))
@@ -335,7 +358,10 @@ class ParameterSet(models.Model):
                                 update_walls=True,
                                 update_barriers=True,
                                 update_grounds=True,
-                                update_groups=True)
+                                update_groups=True,
+                                update_suppliers=True)
+        elif "parameter_set_suppliers" not in self.json_for_session or "parameter_set_suppliers_order" not in self.json_for_session:
+            self.update_json_fk(update_suppliers=True)
 
         return self.json_for_session
     
@@ -347,7 +373,5 @@ class ParameterSet(models.Model):
         if not self.json_for_session:
             return None
 
-        v = self.json_for_session
-        
-        return v
+        return self.json()
         

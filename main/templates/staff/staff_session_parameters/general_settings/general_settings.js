@@ -42,6 +42,18 @@ send_update_parameter_set: function send_update_parameter_set(){
 */
 take_update_parameter_set: function take_update_parameter_set(message_data){
 
+    if(message_data.source === "supplier")
+    {
+        app.supplier_errors = message_data.status.errors || {};
+        app.supplier_message = message_data.status.message || "";
+        if(message_data.status.value === "success")
+        {
+            app.take_get_parameter_set(message_data);
+            app.edit_parameterset_supplier_modal.hide();
+        }
+        return;
+    }
+
     app.cancel_modal=false;
     app.clear_main_form_errors();
 

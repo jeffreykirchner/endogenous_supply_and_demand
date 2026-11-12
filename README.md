@@ -63,5 +63,8 @@ Collectible tokens are no longer spawned. Inventory, transfers, and earnings
 remain available, but new sessions initialize inventories to zero; without a
 separate inventory source, players cannot acquire inventory through collection.
 
+Staff can add and edit suppliers in each session's parameter set, including
+their cost in cents, transfer length in seconds, and coordinates. Suppliers
+are included in parameter-set imports and exports; purchasing is not yet implemented.
 
 
