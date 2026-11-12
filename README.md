@@ -69,4 +69,7 @@ are included in parameter-set imports and exports. Consumers can likewise be
 configured with a value in cents and a quantity of at least one. Purchasing and
 selling are not yet implemented.
 
+The parameter-set editor also stores a maximum travel distance (default 2000);
+it is not yet enforced by movement logic.
+
 

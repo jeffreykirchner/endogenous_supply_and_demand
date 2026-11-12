@@ -43,6 +43,7 @@ class ParameterSet(models.Model):
 
     world_width = models.IntegerField(verbose_name='Width of world in pixels', default=10000)                 #world width in pixels
     world_height = models.IntegerField(verbose_name='Height of world in pixels', default=10000)               #world height in pixels
+    max_travel_distance = models.IntegerField(verbose_name='Max Travel Distance', default=2000)
 
     interaction_length = models.IntegerField(verbose_name='Interaction Length', default=10)                   #interaction length in seconds
     cool_down_length = models.IntegerField(verbose_name='Cool Down Length', default=10)                       #cool down length in seconds
@@ -125,6 +126,7 @@ class ParameterSet(models.Model):
 
             self.world_width = new_ps.get("world_width", 1000)
             self.world_height = new_ps.get("world_height", 1000)
+            self.max_travel_distance = new_ps.get("max_travel_distance", 2000)
 
             self.interaction_length = new_ps.get("interaction_length", 10)
             self.cool_down_length = new_ps.get("cool_down_length", 10)
@@ -306,6 +308,7 @@ class ParameterSet(models.Model):
         
         self.json_for_session["world_width"] = self.world_width
         self.json_for_session["world_height"] = self.world_height
+        self.json_for_session["max_travel_distance"] = self.max_travel_distance
 
         self.json_for_session["interaction_length"] = self.interaction_length
         self.json_for_session["cool_down_length"] = self.cool_down_length
@@ -384,6 +387,9 @@ class ParameterSet(models.Model):
                                 update_suppliers=True,
                                 update_consumers=True)
         else:
+            if "max_travel_distance" not in self.json_for_session:
+                self.json_for_session["max_travel_distance"] = self.max_travel_distance
+                self.save(update_fields=["json_for_session"])
             missing_suppliers = "parameter_set_suppliers" not in self.json_for_session or "parameter_set_suppliers_order" not in self.json_for_session
             missing_consumers = "parameter_set_consumers" not in self.json_for_session or "parameter_set_consumers_order" not in self.json_for_session
             if missing_suppliers or missing_consumers:

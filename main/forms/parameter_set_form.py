@@ -148,6 +148,10 @@ class ParameterSetForm(forms.ModelForm):
                                       widget=forms.NumberInput(attrs={"v-model":"parameter_set.world_height",
                                                                       "step":"1",
                                                                       "min":"1000"}))
+
+    max_travel_distance = forms.IntegerField(label='Max Travel Distance',
+                                            widget=forms.NumberInput(attrs={"v-model": "parameter_set.max_travel_distance",
+                                                                            "step": "1"}))
                                                                 
 
     test_mode = forms.ChoiceField(label='Test Mode',
@@ -161,7 +165,7 @@ class ParameterSetForm(forms.ModelForm):
                  'survey_required', 'survey_link', 'prolific_mode', 'prolific_completion_link', 'reconnection_limit',
                  'token_cents_value', 'interaction_range',
                  'avatar_scale', 'avatar_bound_box_percent', 'avatar_move_speed', 'avatar_animation_speed',
-                 'world_width', 'world_height', 'test_mode']
+                 'world_width', 'world_height', 'max_travel_distance', 'test_mode']
 
     def clean_survey_link(self):
         
