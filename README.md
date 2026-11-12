@@ -65,6 +65,8 @@ separate inventory source, players cannot acquire inventory through collection.
 
 Staff can add and edit suppliers in each session's parameter set, including
 their cost in cents, transfer length in seconds, and coordinates. Suppliers
-are included in parameter-set imports and exports; purchasing is not yet implemented.
+are included in parameter-set imports and exports. Consumers can likewise be
+configured with a value in cents and a quantity of at least one. Purchasing and
+selling are not yet implemented.
 
 

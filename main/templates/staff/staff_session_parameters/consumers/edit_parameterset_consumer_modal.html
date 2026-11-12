@@ -1,0 +1,48 @@
+{% load crispy_forms_tags %}
+<div class="modal fade"
+     id="edit_parameterset_consumer_modal"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="edit_parameterset_consumer_modal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p v-if="consumer_message" class="text-danger" role="alert">[[ consumer_message ]]</p>
+                <form id="parameter_set_consumer_form" novalidate
+                      @submit.prevent="send_parameter_set_consumer_change('update_parameter_set_consumer')">
+                    {% for field in parameter_set_consumer_form %}
+                    <div class="row">
+                        <div class="col col-md-10 offset-md-1">
+                            {{ field|as_crispy_field }}
+                            <span class="text-danger" v-if="consumer_errors.{{ field.name }}" role="alert">
+                                <template v-for="error in consumer_errors.{{ field.name }}">[[ error ]]<br></template>
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-danger" type="button" title="Remove consumer from parameter set."
+                        :disabled="reconnecting || working"
+                        @click="send_parameter_set_consumer_change('remove_parameterset_consumer')">
+                    Delete <i class="far fa-trash-alt"></i>
+                </button>
+                <button class="btn btn-outline-success" type="button" title="Duplicate consumer."
+                        :disabled="reconnecting || working"
+                        @click="send_parameter_set_consumer_change('duplicate_parameterset_consumer')">
+                    Duplicate <i class="far fa-clone"></i>
+                </button>
+                <button class="btn btn-outline-primary" type="submit" form="parameter_set_consumer_form"
+                        title="Update consumer settings." :disabled="reconnecting || working">
+                    Update <i class="fas fa-sign-in-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

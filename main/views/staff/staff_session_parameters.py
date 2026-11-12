@@ -26,6 +26,7 @@ from main.forms import ParameterSetBarrierForm
 from main.forms import ParameterSetGroupForm
 from main.forms import ParameterSetGroundForm
 from main.forms import ParameterSetSupplierForm
+from main.forms import ParameterSetConsumerForm
 
 class StaffSessionParametersView(SingleObjectMixin, View):
     '''
@@ -91,6 +92,7 @@ class StaffSessionParametersView(SingleObjectMixin, View):
                                "parameter_set_barrier_form" : parameter_set_barrier_form,
                                "parameter_set_ground_form" : parameter_set_ground_form,
                                "parameter_set_supplier_form" : ParameterSetSupplierForm(prefix="supplier"),
+                               "parameter_set_consumer_form" : ParameterSetConsumerForm(prefix="consumer"),
                                
                                "import_parameters_form" : ImportParametersForm(user=request.user, session_id=session.id),
 

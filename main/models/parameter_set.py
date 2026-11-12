@@ -74,7 +74,7 @@ class ParameterSet(models.Model):
         load values from dict
         '''
         logger = logging.getLogger(__name__) 
-        from main.forms import ParameterSetSupplierForm
+        from main.forms import ParameterSetConsumerForm, ParameterSetSupplierForm
 
         suppliers = new_ps.get("parameter_set_suppliers", {})
         if not isinstance(suppliers, dict):
@@ -87,6 +87,18 @@ class ParameterSet(models.Model):
             if not form.is_valid():
                 return {"status": "fail", "message": f"Invalid supplier in parameter set: {form.errors.as_text()}"}
             validated_suppliers.append(form.cleaned_data)
+
+        consumers = new_ps.get("parameter_set_consumers", {})
+        if not isinstance(consumers, dict):
+            return {"status": "fail", "message": "Invalid consumers in parameter set."}
+        validated_consumers = []
+        for values in consumers.values():
+            if not isinstance(values, dict):
+                return {"status": "fail", "message": "Invalid consumer in parameter set."}
+            form = ParameterSetConsumerForm(values)
+            if not form.is_valid():
+                return {"status": "fail", "message": f"Invalid consumer in parameter set: {form.errors.as_text()}"}
+            validated_consumers.append(form.cleaned_data)
 
         message = "Parameters loaded successfully."
         status = "success"
@@ -202,6 +214,11 @@ class ParameterSet(models.Model):
                 p = main.models.ParameterSetSupplier(parameter_set=self)
                 p.from_dict(values)
 
+            self.parameter_set_consumers.all().delete()
+            for values in validated_consumers:
+                p = main.models.ParameterSetConsumer(parameter_set=self)
+                p.from_dict(values)
+
             self.json_for_session = None
             self.save()
             
@@ -311,7 +328,8 @@ class ParameterSet(models.Model):
                              update_barriers=False,
                              update_grounds=False,
                              update_groups=False,
-                             update_suppliers=False):
+                             update_suppliers=False,
+                             update_consumers=False):
         '''
         update json model
         '''
@@ -334,6 +352,10 @@ class ParameterSet(models.Model):
         if update_suppliers:
             self.json_for_session["parameter_set_suppliers_order"] = list(self.parameter_set_suppliers.all().values_list('id', flat=True))
             self.json_for_session["parameter_set_suppliers"] = {str(p.id): p.json() for p in self.parameter_set_suppliers.all()}
+
+        if update_consumers:
+            self.json_for_session["parameter_set_consumers_order"] = list(self.parameter_set_consumers.all().values_list('id', flat=True))
+            self.json_for_session["parameter_set_consumers"] = {str(p.id): p.json() for p in self.parameter_set_consumers.all()}
 
         if update_notices:
             self.json_for_session["parameter_set_notices_order"] = list(self.parameter_set_notices.all().values_list('id', flat=True))
@@ -359,9 +381,13 @@ class ParameterSet(models.Model):
                                 update_barriers=True,
                                 update_grounds=True,
                                 update_groups=True,
-                                update_suppliers=True)
-        elif "parameter_set_suppliers" not in self.json_for_session or "parameter_set_suppliers_order" not in self.json_for_session:
-            self.update_json_fk(update_suppliers=True)
+                                update_suppliers=True,
+                                update_consumers=True)
+        else:
+            missing_suppliers = "parameter_set_suppliers" not in self.json_for_session or "parameter_set_suppliers_order" not in self.json_for_session
+            missing_consumers = "parameter_set_consumers" not in self.json_for_session or "parameter_set_consumers_order" not in self.json_for_session
+            if missing_suppliers or missing_consumers:
+                self.update_json_fk(update_suppliers=missing_suppliers, update_consumers=missing_consumers)
 
         return self.json_for_session
     

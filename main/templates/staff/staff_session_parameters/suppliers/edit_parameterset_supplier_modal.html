@@ -31,12 +31,12 @@
                 <button class="btn btn-outline-danger" type="button" title="Remove supplier from parameter set."
                         :disabled="reconnecting || working"
                         @click="send_parameter_set_supplier_change('remove_parameterset_supplier')">
-                    Delete Supplier <i class="far fa-trash-alt"></i>
+                    Delete <i class="far fa-trash-alt"></i>
                 </button>
                 <button class="btn btn-outline-success" type="button" title="Duplicate supplier."
                         :disabled="reconnecting || working"
                         @click="send_parameter_set_supplier_change('duplicate_parameterset_supplier')">
-                    Duplicate Supplier <i class="far fa-clone"></i>
+                    Duplicate <i class="far fa-clone"></i>
                 </button>
                 <button class="btn btn-outline-primary" type="submit" form="parameter_set_supplier_form"
                         title="Update supplier settings." :disabled="reconnecting || working">

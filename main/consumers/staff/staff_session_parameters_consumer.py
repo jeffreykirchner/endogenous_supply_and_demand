@@ -16,6 +16,7 @@ class StaffSessionParametersConsumer(SocketConsumerMixin,
                                      ParameterSetGroupsMixin,
                                      ParameterSetGroundsMixin,
                                      ParameterSetSuppliersMixin,
+                                     ParameterSetConsumersMixin,
                                      SendMessageMixin):
     '''
     websocket for parameter set

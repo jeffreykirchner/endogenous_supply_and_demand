@@ -44,6 +44,9 @@ let app = Vue.createApp({
                     current_parameter_set_supplier : {},
                     supplier_errors : {},
                     supplier_message : "",
+                    current_parameter_set_consumer : {},
+                    consumer_errors : {},
+                    consumer_message : "",
 
                     parameterset_form_ids: {{parameterset_form_ids|safe}},
 
@@ -62,6 +65,7 @@ let app = Vue.createApp({
                     edit_parameterset_group_modal : null,
                     edit_parameterset_ground_modal : null,
                     edit_parameterset_supplier_modal : null,
+                    edit_parameterset_consumer_modal : null,
                     upload_parameter_set_modal : null,
 
                     //form paramters
@@ -145,6 +149,7 @@ let app = Vue.createApp({
             app.edit_parameterset_barrier_modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('edit_parameterset_barrier_modal'), {keyboard: false})
             app.edit_parameterset_ground_modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('edit_parameterset_ground_modal'), {keyboard: false})
             app.edit_parameterset_supplier_modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('edit_parameterset_supplier_modal'), {keyboard: false})
+            app.edit_parameterset_consumer_modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('edit_parameterset_consumer_modal'), {keyboard: false})
 
             document.getElementById('import_parameters_modal').addEventListener('hidden.bs.modal', app.hide_import_parameters);
             document.getElementById('edit_parameterset_modal').addEventListener('hidden.bs.modal', app.hide_edit_parameter_set);
@@ -190,6 +195,7 @@ let app = Vue.createApp({
         {%include "staff/staff_session_parameters/barriers/barriers.js"%}
         {%include "staff/staff_session_parameters/grounds/grounds.js"%}
         {%include "staff/staff_session_parameters/suppliers/suppliers.js"%}
+        {%include "staff/staff_session_parameters/consumers/consumers.js"%}
 
 
         {%include "js/help_doc.js"%}

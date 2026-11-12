@@ -54,6 +54,18 @@ take_update_parameter_set: function take_update_parameter_set(message_data){
         return;
     }
 
+    if(message_data.source === "consumer")
+    {
+        app.consumer_errors = message_data.status.errors || {};
+        app.consumer_message = message_data.status.message || "";
+        if(message_data.status.value === "success")
+        {
+            app.take_get_parameter_set(message_data);
+            app.edit_parameterset_consumer_modal.hide();
+        }
+        return;
+    }
+
     app.cancel_modal=false;
     app.clear_main_form_errors();
 

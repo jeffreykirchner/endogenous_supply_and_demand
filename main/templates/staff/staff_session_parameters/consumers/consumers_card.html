@@ -1,0 +1,43 @@
+<div class="card">
+    <div class="card-header fw-bold">Consumers ([[ parameter_set.parameter_set_consumers_order.length ]])</div>
+    <div class="card-body">
+        <p v-if="consumer_message" class="text-danger" role="alert">[[ consumer_message ]]</p>
+        <div class="row justify-content-center">
+            <div class="col-md-auto text-center">
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="m-1 p-1">Value (&#162;)</th>
+                                <th scope="col" class="m-1 p-1">Quantity</th>
+                                <th scope="col" class="m-1 p-1">Transfer length (seconds)</th>
+                                <th scope="col" class="m-1 p-1">Location (X,Y)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="id in parameter_set.parameter_set_consumers_order" :key="id"
+                                tabindex="0" :aria-label="'Edit consumer ' + id"
+                                @click="show_edit_parameter_set_consumer(id)"
+                                @keydown.enter.prevent="show_edit_parameter_set_consumer(id)"
+                                @keydown.space.prevent="show_edit_parameter_set_consumer(id)">
+                                <td class="player_table_cell">[[ parameter_set.parameter_set_consumers[id].value ]]</td>
+                                <td class="player_table_cell">[[ parameter_set.parameter_set_consumers[id].quantity ]]</td>
+                                <td class="player_table_cell">[[ parameter_set.parameter_set_consumers[id].transfer_length ]]</td>
+                                <td class="player_table_cell">[[ parameter_set.parameter_set_consumers[id].x ]], [[ parameter_set.parameter_set_consumers[id].y ]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <button class="btn btn-outline-success btn-sm" type="button" title="Add consumer"
+                        :disabled="session.started || reconnecting || working"
+                        @click="send_parameter_set_consumer_change('add_parameterset_consumer')">
+                    Add <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
