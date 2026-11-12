@@ -59,7 +59,9 @@ python manage.py runserver
 Navigate to http://localhost:8000 in your browser to see the project running.<br>
 Log in with the email and password you created in the previous step.
 
-
+Collectible tokens are no longer spawned. Inventory, transfers, and earnings
+remain available, but new sessions initialize inventories to zero; without a
+separate inventory source, players cannot acquire inventory through collection.
 
 
 

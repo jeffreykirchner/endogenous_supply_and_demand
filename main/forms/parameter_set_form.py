@@ -77,13 +77,7 @@ class ParameterSetForm(forms.ModelForm):
                                                                             "step":"1",
                                                                             "min":"1"}))
 
-    tokens_per_period = forms.IntegerField(label='Tokens per Period',
-                                           min_value=1,
-                                           widget=forms.NumberInput(attrs={"v-model":"parameter_set.tokens_per_period",
-                                                                           "step":"1",
-                                                                           "min":"0"}))
-    
-    token_cents_value = forms.DecimalField(label='Token Value (¢)',
+    token_cents_value = forms.DecimalField(label='Inventory Unit Value (¢)',
                                             max_digits=6,
                                             decimal_places=2,
                                             min_value=0.01,
@@ -165,7 +159,7 @@ class ParameterSetForm(forms.ModelForm):
         fields =['period_count', 'period_length', 'break_frequency', 'break_length', 'interaction_length', 'cool_down_length',
                  'chat_gpt_mode', 'enable_chat', 'show_instructions', 'instruction_read_aloud_mode',
                  'survey_required', 'survey_link', 'prolific_mode', 'prolific_completion_link', 'reconnection_limit',
-                 'tokens_per_period', 'token_cents_value', 'interaction_range',
+                 'token_cents_value', 'interaction_range',
                  'avatar_scale', 'avatar_bound_box_percent', 'avatar_move_speed', 'avatar_animation_speed',
                  'world_width', 'world_height', 'test_mode']
 

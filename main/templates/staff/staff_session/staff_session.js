@@ -201,9 +201,6 @@ let app = Vue.createApp({
                 case "update_target_location_update":
                     app.take_target_location_update(message_data);
                     break;
-                case "update_collect_token":
-                    app.take_collect_token(message_data);
-                    break;
                 case "update_tractor_beam":
                     app.take_tractor_beam(message_data);
                     break;
@@ -290,7 +287,6 @@ let app = Vue.createApp({
          */
         do_reload: function do_reload()
         {
-            app.setup_pixi_tokens_for_current_period();
             app.setup_pixi_subjects();
         },
 
@@ -305,7 +301,6 @@ let app = Vue.createApp({
         */
         take_get_session: function take_get_session(message_data){
             
-            app.destroy_pixi_tokens_for_all_periods();
             app.destroy_setup_pixi_subjects();
 
             app.session = message_data;
@@ -412,7 +407,6 @@ let app = Vue.createApp({
             //update player earnings and inventory if period has changed
             if(message_data.period_is_over)
             {
-                app.setup_pixi_tokens_for_current_period();
                 app.update_player_inventory();              
                 app.take_update_earnings(message_data.earnings);  
             }
@@ -458,7 +452,6 @@ let app = Vue.createApp({
         {%include "staff/staff_session/chat_gpt/chat_gpt_card.js"%}
         {%include "subject/subject_home/the_stage/pixi_setup.js"%}
         {%include "subject/subject_home/the_stage/avatar.js"%}
-        {%include "subject/subject_home/the_stage/token.js"%}
         {%include "subject/subject_home/the_stage/helpers.js"%}
         {%include "subject/subject_home/the_stage/staff.js"%}
         {%include "subject/subject_home/the_stage/text_emitter.js"%}

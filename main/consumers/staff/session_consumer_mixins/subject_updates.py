@@ -263,80 +263,6 @@ class SubjectUpdatesMixin():
         await self.send_message(message_to_self=event_data, message_to_group=None,
                                 message_type=event['type'], send_to_client=True, send_to_group=False)
 
-    async def collect_token(self, event):
-        '''
-        subject collects token
-        '''
-        if self.controlling_channel != self.channel_name:
-            return
-        
-        logger = logging.getLogger(__name__)
-
-        error_message = []
-        status = "success"
-        
-        try:
-            message_text = event["message_text"]
-            token_id = message_text["token_id"]
-            period_id = message_text["period_id"]
-            player_id = self.session_players_local[event["player_key"]]["id"]
-        except:
-            logger.warning(f"collect_token: invalid data, {event['message_text']}")
-            status = "fail"
-            error_message.append({"id":"collect_token", "message": "Invalid data, try again."})
-        
-        player_id_s = str(player_id)
-        target_list = [player_id]
-
-        if status == "success":
-            if self.world_state_local['tokens'][str(period_id)][str(token_id)]['status'] != 'available':
-                status = "fail"
-                error_message.append({"id":"collect_token", "message": "Token already collected."})
-        
-        result = {"status" :status, "error_message" : error_message}
-
-        if status == "success":
-            self.world_state_local['tokens'][str(period_id)][str(token_id)]['status'] = player_id
-            self.world_state_local['session_players'][player_id_s]['inventory'][str(period_id)]+=1
-
-            inventory = self.world_state_local['session_players'][player_id_s]['inventory'][str(period_id)]
-
-            session = await Session.objects.aget(id=self.session_id)
-            current_period = await session.aget_current_session_period()
-            current_period.summary_data[player_id_s]["cherries_harvested"] += 1
-            await current_period.asave()
-
-            await self.store_world_state()
-
-            result["token_id"] = token_id
-            result["period_id"] = period_id
-            result["player_id"] = player_id
-            result["inventory"] = inventory
-
-            self.session_events.append(SessionEvent(session_id=self.session_id,
-                                                    session_player_id=player_id, 
-                                                    type="collect_token",
-                                                    period_number=self.world_state_local["current_period"],
-                                                    time_remaining=self.world_state_local["time_remaining"],
-                                                    data=result))
-            
-            target_list = self.world_state_local["session_players_order"]
-
-        #logger.warning(f'collect_token: {message_text}, token {token_id}')
-
-        await self.send_message(message_to_self=None, message_to_group=result,
-                                message_type=event['type'], send_to_client=False, 
-                                send_to_group=True, target_list=target_list)
-
-    async def update_collect_token(self, event):
-        '''
-        subject collects token update
-        '''
-        event_data = json.loads(event["group_data"])
-
-        await self.send_message(message_to_self=event_data, message_to_group=None,
-                                message_type=event['type'], send_to_client=True, send_to_group=False)
-    
     async def tractor_beam(self, event):
         '''
         subject intitates a take interaction
@@ -709,4 +635,3 @@ class SubjectUpdatesMixin():
 
                                 
         
-

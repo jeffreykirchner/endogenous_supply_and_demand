@@ -39,7 +39,6 @@ class ParameterSet(models.Model):
     prolific_mode = models.BooleanField(default=False, verbose_name="Prolific Mode")                          #put study into prolific mode
     prolific_completion_link = models.CharField(max_length = 1000, default = '', verbose_name = 'Forward to Prolific after sesison', blank=True, null=True) #at the completion of the study forward subjects to link
 
-    tokens_per_period = models.IntegerField(verbose_name='Number of tokens each period', default=100)         #number of tokens each period
     token_cents_value = models.DecimalField(verbose_name='Token Cents Value', decimal_places=2, max_digits=6, default=1.0) #value of each token in cents
 
     world_width = models.IntegerField(verbose_name='Width of world in pixels', default=10000)                 #world width in pixels
@@ -97,7 +96,6 @@ class ParameterSet(models.Model):
             self.prolific_mode = True if new_ps.get("prolific_mode", False) else False
             self.prolific_completion_link = new_ps.get("prolific_completion_link", None)
 
-            self.tokens_per_period = new_ps.get("tokens_per_period", 100)
             self.token_cents_value = new_ps.get("token_cents_value", 1.0)
 
             self.world_width = new_ps.get("world_width", 1000)
@@ -269,7 +267,6 @@ class ParameterSet(models.Model):
         self.json_for_session["prolific_mode"] = 1 if self.prolific_mode else 0
         self.json_for_session["prolific_completion_link"] = self.prolific_completion_link
 
-        self.json_for_session["tokens_per_period"] = self.tokens_per_period
         self.json_for_session["token_cents_value"] = self.token_cents_value
         
         self.json_for_session["world_width"] = self.world_width
@@ -354,4 +351,3 @@ class ParameterSet(models.Model):
         
         return v
         
-

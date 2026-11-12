@@ -9,7 +9,6 @@ setup_pixi: function setup_pixi(){
     PIXI.Assets.add({alias:'sprite_sheet', src:'{% static "gear_3_animated.json" %}'});
     PIXI.Assets.add({alias:'sprite_sheet_2', src:'{% static "sprite_sheet.json" %}'});
     PIXI.Assets.add({alias:'bg_tex', src:'{% static "background_tile_low.jpg"%}'});
-    PIXI.Assets.add({alias:'cherry_token', src:'{% static "cherry_1_animated.json"%}'});
     PIXI.Assets.add({alias:'wall_tex', src:'{% static "wall.png"%}'});
     PIXI.Assets.add({alias:'barrier_tex', src:'{% static "barrier.png"%}'});
     PIXI.Assets.add({alias:'bridge_tex', src:'{% static "bridge.jpg"%}'});
@@ -19,12 +18,11 @@ setup_pixi: function setup_pixi(){
     PIXI.Assets.add({alias:'help_tex', src:'{% static "help.png"%}'});
 
     const textures_promise = PIXI.Assets.load(['sprite_sheet', 'bg_tex', 'sprite_sheet_2', 'grass_tex', 'water_tex',
-                                               'cherry_token', 'wall_tex', 'barrier_tex', 'bridge_tex', 'dash_tex', 'help_tex']);
+                                               'wall_tex', 'barrier_tex', 'bridge_tex', 'dash_tex', 'help_tex']);
 
     textures_promise.then((textures) => {
         app.setup_pixi_sheets(textures);
         app.setup_pixi_ground();
-        app.setup_pixi_tokens_for_current_period();
         app.setup_pixi_subjects();
         app.setup_pixi_wall();
         app.setup_pixi_barrier();
@@ -71,7 +69,6 @@ reset_pixi_app: async function reset_pixi_app(){
     app.canvas_width = canvas.width;
     app.canvas_height = canvas.height;
 
-    app.last_collision_check = Date.now();
 },
 
 /** load pixi sprite sheets
@@ -171,7 +168,6 @@ game_loop: function game_loop(delta)
     {   
         app.update_offsets_player(delta.deltaTime);
         app.update_mini_map(delta.deltaTime);
-        app.check_for_collisions();
     }
     
     if(app.pixi_mode=="staff")
@@ -196,56 +192,6 @@ game_loop: function game_loop(delta)
 },
 
 
-
-/**
- * check for collisions between local player and other objects
- */
-check_for_collisions: function check_for_collisions(delta)
-{
-    //no harvesting during breaks
-    if(app.session.world_state.time_remaining > app.session.parameter_set.period_length &&
-        app.session.world_state.current_period % app.session.parameter_set.break_frequency == 0)
-    {
-        return;
-    }
-
-    if(Date.now() - app.last_collision_check < 100) return;
-    app.last_collision_check = Date.now();
-
-    const obj = app.session.world_state.session_players[app.session_player.id];
-    let collision_found = false;
-
-    //check for collisions with tokens
-    const current_period_id = app.session.session_periods_order[app.session.world_state.current_period-1];
-    for(const i in app.session.world_state.tokens[current_period_id]){       
-
-        let token = app.session.world_state.tokens[current_period_id][i];
-        let distance = app.get_distance(obj.current_location, token.current_location);
-
-        if(distance <= pixi_avatars[app.session_player.id].avatar_container.width/2 &&
-           token.status == "available" && 
-           !collision_found)
-        {
-            
-            token.status = "waiting";
-            collision_found = true;
-
-            app.send_message("collect_token", 
-                             {"token_id" : i, "period_id" : current_period_id},
-                             "group");
-        }
-        else if(distance>2000)
-        {
-            token.visible=false;
-        }
-        else
-        {
-            token.visible=true;
-        }
-        
-    }
-
-},
 
 /**
  * move the object towards its target location
