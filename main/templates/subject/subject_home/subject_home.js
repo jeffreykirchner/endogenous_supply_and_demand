@@ -590,6 +590,7 @@ let app = Vue.createApp({
         {%include "subject/subject_home/help_doc_subject.js"%}
         {%include "subject/subject_home/the_stage/chat_gpt.js"%}
         {%include "subject/subject_home/the_stage/help_doc_buttons.js"%}
+        {%include "subject/subject_home/the_stage/suppliers.js"%}
 
         /** clear form error messages
         */

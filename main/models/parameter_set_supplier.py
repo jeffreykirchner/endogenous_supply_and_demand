@@ -5,15 +5,13 @@ from main.models import ParameterSet
 
 
 class ParameterSetSupplier(models.Model):
-    parameter_set = models.ForeignKey(
-        ParameterSet, on_delete=models.CASCADE, related_name="parameter_set_suppliers"
-    )
+    parameter_set = models.ForeignKey(ParameterSet, on_delete=models.CASCADE, related_name="parameter_set_suppliers")
+
     cost = models.IntegerField(verbose_name="Cost (cents)", default=50, validators=[MinValueValidator(0)])
-    transfer_length = models.IntegerField(
-        verbose_name="Transfer length (seconds)", default=10, validators=[MinValueValidator(0)]
-    )
+    transfer_length = models.IntegerField(verbose_name="Transfer length (seconds)", default=10, validators=[MinValueValidator(0)])
     x = models.IntegerField(verbose_name="Location X", default=100, validators=[MinValueValidator(0)])
     y = models.IntegerField(verbose_name="Location Y", default=100, validators=[MinValueValidator(0)])
+    
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

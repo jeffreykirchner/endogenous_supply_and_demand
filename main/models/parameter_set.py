@@ -386,14 +386,14 @@ class ParameterSet(models.Model):
                                 update_groups=True,
                                 update_suppliers=True,
                                 update_consumers=True)
-        else:
-            if "max_travel_distance" not in self.json_for_session:
-                self.json_for_session["max_travel_distance"] = self.max_travel_distance
-                self.save(update_fields=["json_for_session"])
-            missing_suppliers = "parameter_set_suppliers" not in self.json_for_session or "parameter_set_suppliers_order" not in self.json_for_session
-            missing_consumers = "parameter_set_consumers" not in self.json_for_session or "parameter_set_consumers_order" not in self.json_for_session
-            if missing_suppliers or missing_consumers:
-                self.update_json_fk(update_suppliers=missing_suppliers, update_consumers=missing_consumers)
+        # else:
+        #     if "max_travel_distance" not in self.json_for_session:
+        #         self.json_for_session["max_travel_distance"] = self.max_travel_distance
+        #         self.save(update_fields=["json_for_session"])
+        #     missing_suppliers = "parameter_set_suppliers" not in self.json_for_session or "parameter_set_suppliers_order" not in self.json_for_session
+        #     missing_consumers = "parameter_set_consumers" not in self.json_for_session or "parameter_set_consumers_order" not in self.json_for_session
+        #     if missing_suppliers or missing_consumers:
+        #         self.update_json_fk(update_suppliers=missing_suppliers, update_consumers=missing_consumers)
 
         return self.json_for_session
     

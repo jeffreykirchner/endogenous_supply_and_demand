@@ -177,8 +177,6 @@ class Session(models.Model):
                             "finished":False,
                             "session_periods":{str(i.id) : i.json() for i in self.session_periods.all()},
                             "session_periods_order" : list(self.session_periods.all().values_list('id', flat=True)),}
-        
-        inventory = {str(i):0 for i in list(self.session_periods.all().values_list('id', flat=True))}
 
         #session periods
         for i in self.world_state["session_periods"]:
@@ -193,7 +191,7 @@ class Session(models.Model):
 
             v['current_location'] = {'x':i['parameter_set_player__start_x'], 'y':i['parameter_set_player__start_y']}
             v['target_location'] = v['current_location']
-            v['inventory'] = inventory
+            v['good_id'] = None
             v['tractor_beam_target'] = None
             v['frozen'] = False
             v['cool_down'] = 0
@@ -204,6 +202,39 @@ class Session(models.Model):
             
             self.world_state["session_players"][str(i['id'])] = v
             self.world_state["session_players_order"].append(i['id'])
+
+        #suppliers
+        self.world_state["session_suppliers"] = {}
+
+        for i in self.parameter_set.parameter_set_suppliers.all():
+            v = {}
+            v["parameter_set_supplier_id"] = i.id
+            v["status"] = "closed"
+            v["current_working_player"] = None
+
+            self.world_state["session_suppliers"][str(i.id)] = v
+
+        #consumers
+        self.world_state["session_consumers"] = {}
+        for i in self.parameter_set.parameter_set_consumers.all():
+            v={}
+            v["parameter_set_consumer_id"] = i.id
+            v["inventory"] = 0
+            v["current_working_player"] = None
+
+            self.world_state["session_consumers"][str(i.id)] = v
+
+        #goods
+        self.world_state["session_goods"] = {}
+        for i in self.parameter_set.parameter_set_suppliers.all():
+            v={}
+            v["parameter_set_supplier_id"] = i.id
+            v["player_1"] = None
+            v["player_2"] = None
+            v["crossed_transfer_zone"] = False
+            v["parameter_set_consumer_id"] = None
+
+            self.world_state["session_goods"][str(i['id'])] = v
         
         self.save()
 

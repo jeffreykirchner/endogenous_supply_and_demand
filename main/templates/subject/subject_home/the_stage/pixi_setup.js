@@ -16,9 +16,14 @@ setup_pixi: function setup_pixi(){
     PIXI.Assets.add({alias:'water_tex', src:'{% static "water_tile.jpg"%}'});
     PIXI.Assets.add({alias:'dash_tex', src:'{% static "dash_1.png"%}'});
     PIXI.Assets.add({alias:'help_tex', src:'{% static "help.png"%}'});
+    PIXI.Assets.add({alias:'safe_open_tex', src:'{% static "safe_open.png"%}'});
+    PIXI.Assets.add({alias:'safe_closed_tex', src:'{% static "safe_closed.png"%}'});
+    PIXI.Assets.add({alias:'safe_open_tex', src:'{% static "safe_open.png"%}'});
+    PIXI.Assets.add({alias:'safe_closed_tex', src:'{% static "safe_closed.png"%}'});
 
     const textures_promise = PIXI.Assets.load(['sprite_sheet', 'bg_tex', 'sprite_sheet_2', 'grass_tex', 'water_tex',
-                                               'wall_tex', 'barrier_tex', 'bridge_tex', 'dash_tex', 'help_tex']);
+                                               'wall_tex', 'barrier_tex', 'bridge_tex', 'dash_tex', 'help_tex', 
+                                               'safe_open_tex', 'safe_closed_tex']);
 
     textures_promise.then((textures) => {
         app.setup_pixi_sheets(textures);

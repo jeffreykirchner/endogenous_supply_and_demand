@@ -12,3 +12,4 @@ let pixi_barriers = {};                        //barriers
 let pixi_grounds = {};                         //grounds
 let wall_search = {counter:0, current_location:{x:-1,y:-1}, target_location:{x:-1,y:-1}};
 let wall_search_objects = [];
+let pixi_suppliers = {};                            //suppliers
